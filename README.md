@@ -6,13 +6,15 @@ This is just a graphical frontend for the command-line application [yt-dlp](http
 
 ## How to install and use it
 
-1. Download pre-built binaries from the [Releases](https://github.com/lumpfishtech/mediacatcher/releases) page:
+1. Download the latest release for your platform:
+   - **Windows (64-bit)**: [LumpfishMediaCatcher-v0.0.0-windows-amd64.zip](https://github.com/LumpfishTech/mediacatcher/releases/download/v0.0.0/LumpfishMediaCatcher-v0.0.0-windows-amd64.zip)
+   - **Linux (64-bit)**: [LumpfishMediaCatcher-v0.0.0-linux-amd64.tar.gz](https://github.com/LumpfishTech/mediacatcher/releases/download/v0.0.0/LumpfishMediaCatcher-v0.0.0-linux-amd64.tar.gz)
+   - Or browse all releases: [Releases page](https://github.com/lumpfishtech/mediacatcher/releases)
 
-- **Windows (64-bit)**: Download the `.zip` file, extract, and run `LumpfishMediaCatcher.exe`
-- **Linux (64-bit)**: Download the `.tar.gz` file, extract, and run `./LumpfishMediaCatcher`
-
-2. Extract the executable and place it in an empty folder (a config file and log file will be created on the first run)
-3. Double-click on the executable
+2. Extract the archive to a location of your choice. The archive contains a `LumpfishMediaCatcher` folder with the executable inside (a config file and log file will be created on the first run in the same folder as the executable)
+3. Double-click on the executable:
+   - **Windows**: Run `LumpfishMediaCatcher.exe`
+   - **Linux**: Run `./LumpfishMediaCatcher`
 4. On first run, you will be presented with a setup wizard. Choose to use the system yt-dlp if you have already installed it, or let Lumpfish Media Catcher manage it.
 5. Find the URL of the video you want to download
 6. In the main application window, paste the URL in the field and click "List Formats". This will populate the dropdown menu below where you can pick the desired format (if a format does not specify "audio only" or "video only", it contains both tracks).
