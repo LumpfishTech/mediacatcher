@@ -40,6 +40,22 @@ The application creates a log file (`lmc-app.log`) in the same directory as the 
 
 Edit the `log_file` field in `lmc-config.json` to change the log name or location (e.g., `"my-log.log"`, `"../logs/app.log"`, or `"/var/log/app.log"`). Relative or absolute paths work if the folder structure already exists.
 
+### Creating a Release
+
+**For maintainers:** To create a new release, follow these steps:
+
+1. Ensure all changes are merged to `master` and CI passes (tests + linting)
+2. On the `master` branch, create and push a semantic version tag:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+3. The release workflow will automatically:
+   - Verify the tag is on the master branch
+   - Build binaries for Windows and Linux
+   - Generate release notes from commits
+   - Create a GitHub release with downloadable archives
+
 ## About This Project
 
 This project is an experiment in AI-driven software development. I developed this application almost entirely using Claude AI (Anthropic's AI assistant) to explore how effectively an AI agent can assist in real-world software development.

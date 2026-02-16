@@ -1,6 +1,6 @@
 module github.com/lumpfishtech/mediacatcher
 
-go 1.25
+go 1.24
 
 require fyne.io/fyne/v2 v2.4.5
 

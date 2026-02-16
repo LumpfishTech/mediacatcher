@@ -33,12 +33,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0  # Need full history to verify branch
+
+      - name: Verify tag is on master branch
+        shell: bash
+        run: |
+          if ! git branch -r --contains ${{ github.ref }} | grep -q "origin/master"; then
+            echo "Error: Release tags must be created on the master branch"
+            echo "Current tag: ${{ github.ref }}"
+            echo "Branches containing this tag:"
+            git branch -r --contains ${{ github.ref }}
+            exit 1
+          fi
+          echo "Tag verified to be on master branch"
 
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25'
+          go-version: '1.24'
           cache: true
 
       - name: Install Linux dependencies
@@ -114,7 +126,7 @@ jobs:
           - **Linux (64-bit)**: \`LumpfishMediaCatcher-${{ steps.get_version.outputs.VERSION }}-linux-amd64.tar.gz\`
 
           ### Requirements
-          - Go 1.25+ (for building from source)
+          - Go 1.24+ (for building from source)
           - yt-dlp (can be installed automatically on first run)
 
           See README.md for installation and usage instructions.
