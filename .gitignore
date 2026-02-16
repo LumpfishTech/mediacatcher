@@ -1,6 +1,8 @@
 # Binaries
 /LumpfishMediaCatcher/
 /LumpfishMediaCatcher-*/
+/build/
+/dist/
 yt-dlp
 *.exe
 *.exe~

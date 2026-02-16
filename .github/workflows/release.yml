@@ -19,15 +19,11 @@ jobs:
           - os: windows-latest
             goos: windows
             goarch: amd64
-            artifact_name: LumpfishMediaCatcher.exe
-            archive_type: zip
 
           # Linux AMD64
           - os: ubuntu-latest
             goos: linux
             goarch: amd64
-            artifact_name: LumpfishMediaCatcher
-            archive_type: tar.gz
 
     steps:
       - name: Checkout code
@@ -36,7 +32,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.25'
           cache: true
 
       - name: Install Linux dependencies
@@ -53,49 +49,16 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Building version: $VERSION"
 
-      - name: Build binary
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 1
-        run: |
-          go build -v -ldflags="-s -w -X main.version=${{ steps.get_version.outputs.VERSION }}" -o ${{ matrix.artifact_name }} ./cmd/lumpfishmediacatcher
-
-      - name: Prepare archive (Windows)
-        if: matrix.archive_type == 'zip'
+      - name: Build and package release
         shell: bash
         run: |
-          mkdir -p LumpfishMediaCatcher
-          mv ${{ matrix.artifact_name }} LumpfishMediaCatcher/
-          cp README.md LumpfishMediaCatcher/ || true
-          cp LICENSE LumpfishMediaCatcher/ || true
-
-      - name: Create ZIP archive (Windows)
-        if: matrix.archive_type == 'zip'
-        shell: pwsh
-        run: |
-          $archiveName = "LumpfishMediaCatcher-${{ steps.get_version.outputs.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}.zip"
-          Compress-Archive -Path LumpfishMediaCatcher -DestinationPath $archiveName
-          echo "ARCHIVE_NAME=$archiveName" >> $env:GITHUB_OUTPUT
-        id: archive_windows
-
-      - name: Prepare archive (Unix)
-        if: matrix.archive_type == 'tar.gz'
-        run: |
-          mkdir -p LumpfishMediaCatcher
-          mv ${{ matrix.artifact_name }} LumpfishMediaCatcher/
-          cp README.md LumpfishMediaCatcher/ || true
-          cp LICENSE LumpfishMediaCatcher/ || true
-          ARCHIVE_NAME="LumpfishMediaCatcher-${{ steps.get_version.outputs.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz"
-          tar -czf "$ARCHIVE_NAME" LumpfishMediaCatcher
-          echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
-        id: archive_unix
+          make release VERSION=${{ steps.get_version.outputs.VERSION }} GOARCH=${{ matrix.goarch }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: LumpfishMediaCatcher-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: LumpfishMediaCatcher-${{ steps.get_version.outputs.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}.*
+          path: dist/LumpfishMediaCatcher-${{ steps.get_version.outputs.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}.*
           retention-days: 5
 
   release:
