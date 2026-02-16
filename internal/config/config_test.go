@@ -198,7 +198,9 @@ func TestConcurrentSave(t *testing.T) {
 
 	write := func(cfg *Config) {
 		data, _ := json.MarshalIndent(cfg, "", "  ")
-		os.WriteFile(configPath, data, 0644)
+		if err := os.WriteFile(configPath, data, 0644); err != nil {
+			t.Errorf("Failed to write config: %v", err)
+		}
 		done <- true
 	}
 
